@@ -32,6 +32,14 @@ func NewConflict(message string) *RestErr {
 	}
 }
 
+func NewUnAuthorized(message string) *RestErr {
+	return &RestErr{
+		Message:    message,
+		Error:      "unauthorised",
+		StatusCode: http.StatusUnauthorized,
+	}
+}
+
 func NewInternalServerError(message string) *RestErr {
 	return &RestErr{
 		Message:    message,
