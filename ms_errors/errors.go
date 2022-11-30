@@ -14,32 +14,32 @@ type Errors interface {
 	Causes() []interface{}
 }
 
-type msErr struct {
+type MSErr struct {
 	ErrMessage string        `json:"message"`
 	ErrStatus  int           `json:"status"`
 	ErrError   string        `json:"error"`
 	ErrCauses  []interface{} `json:"causes"`
 }
 
-func (e msErr) Error() string {
+func (e MSErr) Error() string {
 	return fmt.Sprintf("message: %s - status: %d - error: %s - causes: %v",
 		e.ErrMessage, e.ErrStatus, e.ErrError, e.ErrCauses)
 }
 
-func (e msErr) Message() string {
+func (e MSErr) Message() string {
 	return e.ErrMessage
 }
 
-func (e msErr) Status() int {
+func (e MSErr) Status() int {
 	return e.ErrStatus
 }
 
-func (e msErr) Causes() []interface{} {
+func (e MSErr) Causes() []interface{} {
 	return e.ErrCauses
 }
 
 func NewMsError(message string, status int, err string, causes []interface{}) Errors {
-	return msErr{
+	return MSErr{
 		ErrMessage: message,
 		ErrStatus:  status,
 		ErrError:   err,
@@ -48,7 +48,7 @@ func NewMsError(message string, status int, err string, causes []interface{}) Er
 }
 
 func NewMsErrorFromBytes(bytes []byte) (Errors, error) {
-	var apiErr msErr
+	var apiErr MSErr
 	if err := json.Unmarshal(bytes, &apiErr); err != nil {
 		return nil, errors.New("invalid json")
 	}
@@ -56,7 +56,7 @@ func NewMsErrorFromBytes(bytes []byte) (Errors, error) {
 }
 
 func NewBadRequestError(message string) Errors {
-	return msErr{
+	return MSErr{
 		ErrMessage: message,
 		ErrStatus:  http.StatusBadRequest,
 		ErrError:   "bad_request",
@@ -64,7 +64,7 @@ func NewBadRequestError(message string) Errors {
 }
 
 func NewNotFoundError(message string) Errors {
-	return msErr{
+	return MSErr{
 		ErrMessage: message,
 		ErrStatus:  http.StatusNotFound,
 		ErrError:   "not_found",
@@ -72,7 +72,7 @@ func NewNotFoundError(message string) Errors {
 }
 
 func NewUnauthorizedError(message string) Errors {
-	return msErr{
+	return MSErr{
 		ErrMessage: message,
 		ErrStatus:  http.StatusUnauthorized,
 		ErrError:   "unauthorized",
@@ -80,7 +80,7 @@ func NewUnauthorizedError(message string) Errors {
 }
 
 func NewInternalServerError(message string, err error) Errors {
-	result := msErr{
+	result := MSErr{
 		ErrMessage: message,
 		ErrStatus:  http.StatusInternalServerError,
 		ErrError:   "internal_server_error",
