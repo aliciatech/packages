@@ -24,6 +24,14 @@ func NewNotFound(message string) *RestErr {
 	}
 }
 
+func NewConflict(message string) *RestErr {
+	return &RestErr{
+		Message:    message,
+		Error:      "conflict",
+		StatusCode: http.StatusConflict,
+	}
+}
+
 func NewInternalServerError(message string) *RestErr {
 	return &RestErr{
 		Message:    message,
