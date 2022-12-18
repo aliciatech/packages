@@ -40,6 +40,14 @@ func NewUnAuthorized(message string) *RestErr {
 	}
 }
 
+func NewForbidden(message string) *RestErr {
+	return &RestErr{
+		Message:    message,
+		Error:      "forbidden",
+		StatusCode: http.StatusForbidden,
+	}
+}
+
 func NewInternalServerError(message string) *RestErr {
 	return &RestErr{
 		Message:    message,
